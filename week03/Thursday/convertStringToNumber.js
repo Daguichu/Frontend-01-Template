@@ -29,11 +29,26 @@ function xTob(str) {
 }
 
 //处理科学计数法
-function eToTen(charts) {}
+function eToTen(charts) {
+  let indexE = charts.indexOf("e");
+  if (indexE === -1) indexE = charts.indexOf("E");
+  const base = charts.slice(0, indexE).join("");
+  const index = charts.slice(indexE + 1).join("");
+  let numberBase = convertStringToNumber(base);
+  const numberIndex = convertStringToNumber(index);
+  for (let i = 0; i < numberIndex; i++) {
+    numberBase = numberBase * 10;
+  }
+  return numberBase;
+}
 
 function convertStringToNumber(string, x = 10) {
   if (x !== 2 && x !== 8 && x !== 10 && x !== 16) return NaN;
   var charts = string.split("");
+  var isNegative = charts[0] === "-";
+  if (isNegative) {
+    charts = charts.slice(1);
+  }
   var number = 0;
   let i = 0,
     len = charts.length;
@@ -43,6 +58,10 @@ function convertStringToNumber(string, x = 10) {
     }
     charts = charts.join("").split("");
     x = 2;
+  }
+  if (charts.includes("e") || charts.includes("E")) {
+    const result = eToTen(charts);
+    return isNegative ? -result : result;
   }
   while (i < charts.length) {
     if (charts[i] === ".") {
@@ -59,15 +78,28 @@ function convertStringToNumber(string, x = 10) {
     number += (charts[i].codePointAt(0) - "0".codePointAt(0)) * fraction;
     i++;
   }
-  return number;
+  return isNegative ? -number : number;
 }
 
-console.log(convertStringToNumber("100", 2));
-console.log(convertStringToNumber("1011", 2));
-console.log(convertStringToNumber("100.001", 2));
-console.log(convertStringToNumber("100.0111", 2));
-console.log(convertStringToNumber("10.01"));
-console.log(convertStringToNumber("10101010", 2));
+console.log(convertStringToNumber("189")); //189
+console.log(convertStringToNumber("1011")); //1011
+console.log(convertStringToNumber("100.001", 2)); //4.125
+console.log(convertStringToNumber("100.0111", 2)); //4.4375
+console.log(convertStringToNumber("173", 8)); //123
+console.log(convertStringToNumber("73", 8)); //59
 console.log(convertStringToNumber("aa", 16)); //170
-console.log(convertStringToNumber("1a", 16)); //26
+console.log(convertStringToNumber("1B", 16)); //27
 console.log(convertStringToNumber("10.f", 16)); //16.9375
+console.log(convertStringToNumber("1.25E3")); //1250
+console.log(convertStringToNumber("12E9")); //12000000000
+console.log(convertStringToNumber("-189")); //-189
+console.log(convertStringToNumber("-1011")); //-1011
+console.log(convertStringToNumber("-100.001", 2)); //-4.125
+console.log(convertStringToNumber("-100.0111", 2)); //-4.4375
+console.log(convertStringToNumber("-173", 8)); //-123
+console.log(convertStringToNumber("-73", 8)); //-59
+console.log(convertStringToNumber("-aa", 16)); //-170
+console.log(convertStringToNumber("-1B", 16)); //-27
+console.log(convertStringToNumber("-10.f", 16)); //-16.9375
+console.log(convertStringToNumber("-1.25E3")); //-1250
+console.log(convertStringToNumber("-12E9")); //-12000000000
