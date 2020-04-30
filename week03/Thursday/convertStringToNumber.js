@@ -32,12 +32,15 @@ function xTob(str) {
 function eToTen(charts) {
   let indexE = charts.indexOf("e");
   if (indexE === -1) indexE = charts.indexOf("E");
+  const isNegative = charts.includes("-");
   const base = charts.slice(0, indexE).join("");
-  const index = charts.slice(indexE + 1).join("");
+  const index = isNegative
+    ? charts.slice(indexE + 2).join("")
+    : charts.slice(indexE + 1).join("");
   let numberBase = convertStringToNumber(base);
   const numberIndex = convertStringToNumber(index);
   for (let i = 0; i < numberIndex; i++) {
-    numberBase = numberBase * 10;
+    numberBase = isNegative ? numberBase / 10 : numberBase * 10;
   }
   return numberBase;
 }
@@ -92,6 +95,8 @@ console.log(convertStringToNumber("1B", 16)); //27
 console.log(convertStringToNumber("10.f", 16)); //16.9375
 console.log(convertStringToNumber("1.25E3")); //1250
 console.log(convertStringToNumber("12E9")); //12000000000
+console.log(convertStringToNumber('123e-2')) //1.23
+console.log(convertStringToNumber('1234E-4')) //0.1234
 console.log(convertStringToNumber("-189")); //-189
 console.log(convertStringToNumber("-1011")); //-1011
 console.log(convertStringToNumber("-100.001", 2)); //-4.125
@@ -103,3 +108,5 @@ console.log(convertStringToNumber("-1B", 16)); //-27
 console.log(convertStringToNumber("-10.f", 16)); //-16.9375
 console.log(convertStringToNumber("-1.25E3")); //-1250
 console.log(convertStringToNumber("-12E9")); //-12000000000
+console.log(convertStringToNumber('-123e-2')) //-1.23
+console.log(convertStringToNumber('-1234E-4')) //-0.1234
