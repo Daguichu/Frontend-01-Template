@@ -54,10 +54,10 @@ ${this.bodyText}
         if (parse.isFinished) {
           resolve(parse.response);
         }
-        console.log(parse.statusLine);
-        console.log(parse.headers);
+        // console.log(parse.statusLine);
+        // console.log(parse.headers);
         //resolve(data.toString());
-        connection.end();
+        connection.ßend();
       });
       connection.on("error", (err) => {
         reject(err);
