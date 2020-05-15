@@ -51,6 +51,9 @@ ${this.bodyText}
       }
       connection.on("data", (data) => {
         parse.receive(data.toString());
+        if (parse.isFinished) {
+          resolve(parse.response);
+        }
         console.log(parse.statusLine);
         console.log(parse.headers);
         //resolve(data.toString());
@@ -81,6 +84,20 @@ class ResponseParse {
     this.headerName = "";
     this.headerValue = "";
     this.bodyParse = null;
+  }
+
+  get isFinished() {
+    return this.bodyParse && this.bodyParse.isFinish;
+  }
+
+  get response() {
+    this.statusLine.match(/HTTP\/1.1 ([0-9+]) ([\s\S]+)/);
+    return {
+      statusCode: RegExp.$1,
+      statusText: RegExp.$2,
+      headers: this.headers,
+      body: this.bodyParse.content.join(""),
+    };
   }
 
   receive(string) {
@@ -155,7 +172,6 @@ class TrunkeBodyParse {
     if (this.current === this.WAITING_LENGTH) {
       if (char === "\r") {
         if (this.length === 0) {
-          console.log(this.content);
           this.isFinish = true;
         }
         this.current = this.WAITING_LENGTH_LINE_END;
