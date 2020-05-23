@@ -1,4 +1,5 @@
 const net = require("net");
+const parser = require("./parser");
 
 class Request {
   constructor(options) {
@@ -57,7 +58,7 @@ ${this.bodyText}
         // console.log(parse.statusLine);
         // console.log(parse.headers);
         //resolve(data.toString());
-        connection.ßend();
+        connection.end();
       });
       connection.on("error", (err) => {
         reject(err);
@@ -176,8 +177,8 @@ class TrunkeBodyParse {
         }
         this.current = this.WAITING_LENGTH_LINE_END;
       } else {
-        this.length *= 10;
-        this.length += char.charCodeAt(0) - "0".charCodeAt(0);
+        this.length *= 16;
+        this.length += parseInt(char, 16);
       }
     } else if (this.current === this.WAITING_LENGTH_LINE_END) {
       if (char === "\n") {
@@ -216,7 +217,8 @@ void (async function () {
   });
 
   let response = await request.send();
-  console.log(response);
+
+  let dom = parser.parseHTML(response.body);
 })();
 
 // class Response {}
