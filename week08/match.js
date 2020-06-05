@@ -3,22 +3,103 @@ let id = "";
 let attrs = {};
 let attrName = "";
 let attrValue = "";
+let tagName = "";
 
 function match(selector, element) {
   const selectorList = selector.split(" ");
   const lastSelector = selectorList[selectorList.length - 1];
+  let parent = element.parentNode;
 
   let state = startSelector;
   for (let i of lastSelector) {
     state = state(i);
   }
-  console.log(classNames, id, attrs);
+  const matchElem = check(element);
+  let len = selectorList.length,
+    i;
+  if (matchElem) {
+    if (len === 1) {
+      return true;
+    }
+    for (i = len - 2; i >= 0; i--) {
+      classNames = [];
+      id = "";
+      attrs = {};
+      attrName = "";
+      attrValue = "";
+      tagName = "";
+      state = startSelector;
+      let select = selectorList[i];
+      for (let i of select) {
+        state = state(i);
+      }
 
-  const eleClass = element.getAttribute("class");
-  const eleId = element.getAttribute("id");
-  const key = element.getAttribute("key");
-  console.log(eleClass, eleId, key);
+      while (parent != null) {
+        if (check(parent)) {
+          parent = parent.parentNode;
+          break;
+        } else {
+          parent = parent.parentNode;
+        }
+      }
+      if (parent == null) {
+        break;
+      }
+    }
+  } else {
+    return false;
+  }
+  if (i === -1) {
+    classNames = [];
+    id = "";
+    attrs = {};
+    attrName = "";
+    attrValue = "";
+    tagName = "";
+    return true;
+  } else {
+    classNames = [];
+    id = "";
+    attrs = {};
+    attrName = "";
+    attrValue = "";
+    tagName = "";
+    return false;
+  }
   // return true;
+}
+
+function check(element) {
+  const attrKeys = Object.keys(attrs);
+  if (classNames.length) {
+    const eleClass = element.getAttribute("class");
+    const arrayClass = eleClass.split(" ");
+    for (let i = 0, len = classNames.length; i < len; i++) {
+      if (!arrayClass.includes(classNames[i])) {
+        return false;
+      }
+    }
+  }
+  if (id) {
+    const eleId = element.getAttribute("id");
+    if (eleId !== id) {
+      return false;
+    }
+  }
+  if (attrKeys.length) {
+    for (let i = 0, len = attrKeys.length; i < len; i++) {
+      const value = element.getAttribute(attrKeys[i]);
+      if (value !== attrs[attrKeys[i]]) {
+        return false;
+      }
+    }
+  }
+  if (tagName) {
+    if (element.tagName !== tagName.toUpperCase()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function startSelector(c) {
@@ -29,6 +110,19 @@ function startSelector(c) {
   } else if (c === "[") {
     return isStartAttr;
   } else {
+    return isTag(c);
+  }
+}
+
+function isTag(c) {
+  if (c === ".") {
+    return isStartClass;
+  } else if (c === "#") {
+    return isId;
+  } else if (c === "[") {
+    return isStartAttr;
+  } else {
+    tagName = tagName + c;
     return isTag;
   }
 }
