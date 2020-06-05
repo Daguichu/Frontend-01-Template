@@ -49,21 +49,15 @@ function match(selector, element) {
   } else {
     return false;
   }
+  classNames = [];
+  id = "";
+  attrs = {};
+  attrName = "";
+  attrValue = "";
+  tagName = "";
   if (i === -1) {
-    classNames = [];
-    id = "";
-    attrs = {};
-    attrName = "";
-    attrValue = "";
-    tagName = "";
     return true;
   } else {
-    classNames = [];
-    id = "";
-    attrs = {};
-    attrName = "";
-    attrValue = "";
-    tagName = "";
     return false;
   }
   // return true;
