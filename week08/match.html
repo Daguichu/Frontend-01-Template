@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>match</title>
+  </head>
+  <body>
+    <div>
+      <div class="a b c" key='0' id="id"></div>
+    </div>
+    <script src="./match.js" type="text/javascript"></script>
+    <script>
+      const ele = document.getElementById("id");
+      match("#id.a.b.c[key=0]", ele);
+    </script>
+  </body>
+</html>
