@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .ct {
+        display: flex;
+      }
+      .deng {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        background-color: grey;
+        margin-right: 10px;
+      }
+
+      .deng.red {
+        background-color: red;
+      }
+
+      .deng.yellow {
+        background-color: yellow;
+      }
+
+      .deng.green {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ct" id="root">
+      <div class="deng"></div>
+      <div class="deng"></div>
+      <div class="deng"></div>
+    </div>
+    <script>
+      const ct = document.getElementById("root");
+      const red = ct.firstElementChild;
+      const yellow = red.nextElementSibling;
+      const green = ct.lastElementChild;
+      function addYellow() {
+        green.classList.remove("green");
+        yellow.classList.add("yellow");
+        setTimeout(addRed, 2000);
+      }
+      function addGreen() {
+        red.classList.remove("red");
+        green.classList.add("green");
+        setTimeout(addYellow, 10000);
+      }
+      function addRed() {
+        yellow.classList.remove("yellow");
+        red.classList.add("red");
+        setTimeout(addGreen, 5000);
+      }
+      addRed();
+    </script>
+  </body>
+</html>

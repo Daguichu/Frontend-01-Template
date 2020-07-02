@@ -137,6 +137,7 @@ function specificity(selector) {
       p[3] += 1;
     }
   }
+  return p;
 }
 
 let rules = [];

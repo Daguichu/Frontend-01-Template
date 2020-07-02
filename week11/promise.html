@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .ct {
+        display: flex;
+      }
+      .deng {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        background-color: grey;
+        margin-right: 10px;
+      }
+
+      .deng.red {
+        background-color: red;
+      }
+
+      .deng.yellow {
+        background-color: yellow;
+      }
+
+      .deng.green {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ct" id="root">
+      <div class="deng"></div>
+      <div class="deng"></div>
+      <div class="deng"></div>
+    </div>
+    <script>
+      const ct = document.getElementById("root");
+      const red = ct.firstElementChild;
+      const yellow = red.nextElementSibling;
+      const green = ct.lastElementChild;
+      function addYellow() {
+        green.classList.remove("green");
+        yellow.classList.add("yellow");
+      }
+      function addGreen() {
+        red.classList.remove("red");
+        green.classList.add("green");
+      }
+      function addRed() {
+        yellow.classList.remove("yellow");
+        red.classList.add("red");
+      }
+      function sleep(t) {
+        return new Promise((resolve, reject) => {
+          setTimeout(resolve, t);
+        });
+      }
+      function go() {
+        addGreen();
+        sleep(10000)
+          .then(() => {
+            addYellow();
+            return sleep(2000);
+          })
+          .then(() => {
+            addRed();
+            return sleep(5000);
+          })
+          .then(go);
+      }
+      go();
+    </script>
+  </body>
+</html>
