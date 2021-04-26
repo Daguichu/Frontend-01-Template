@@ -1,0 +1,26 @@
+<script>
+  for (let i = 0; i < 128; i++) {
+    document.write(
+      i +
+        " <span style='background:red'>" +
+        String.fromCharCode(i) +
+        "</span></br>"
+    );
+  }
+</script>
+InputElement ::
+  WhiteSpace <TAB> <VT> <FF> <SP> <NBSP>&nbsp; <ZWNBSP> <USP>
+  LineTerminator
+  Comment
+  Token
+    Punctuator 
+    Keyword
+    IdentifierName 标识符
+      Keyword
+      identifier
+      变量名
+      属性名
+    Literal
+      NumericLiteral 
+      StringLiteral 
+    Template

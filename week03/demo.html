@@ -1,0 +1,15 @@
+<script>
+  function cls1(s) {
+    console.log(s);
+  }
+  function cls2(s) {
+    console.log("2", s);
+    return cls1;
+  }
+  new new cls2("good")();
+
+  var o = { x: 1 };
+  o.x + 2;
+  delete o.x;
+  delete 1;
+</script>

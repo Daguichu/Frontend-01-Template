@@ -9,7 +9,7 @@
         width: 500px;
         white-space: nowrap;
         outline: 1px solid blue;
-        overflow: hidden;
+        /* overflow: hidden; */
       }
       .carousel > img {
         width: 100%;
@@ -33,6 +33,7 @@
           for (let v of data) {
             const element = document.createElement("img");
             element.src = v;
+            element.addEventListener("drag", (event) => event.preventDefault());
             this.root.appendChild(element);
           }
 
@@ -59,9 +60,26 @@
               position = nextPosition;
             }, 16);
 
-            setTimeout(nextPic, 3000);
+            this.root.addEventListener("mousedown", (event) => {
+              let startX = event.clientX,
+                startY = event.clientY;
+
+              let move = (event) => {
+                console.log(event.clientX - startX, event.clientY - startY);
+              };
+
+              let up = (event) => {
+                document.removeEventListener("mousemove", move);
+                document.removeEventListener("mouseup", up);
+              };
+
+              document.addEventListener("mousemove", move);
+              document.addEventListener("mouseup", up);
+            });
+
+            // setTimeout(nextPic, 3000);
           };
-          nextPic();
+          // nextPic();
         }
       }
       //create
