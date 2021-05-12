@@ -6,7 +6,7 @@ let currentTextNode = null;
 
 let stack = [{ type: "document", children: [] }];
 
-const EOF = Symbol("EOF"); //EOF: end of file
+const EOF = Symbol("EOF"); //EOF: end of file 标识文件结尾
 
 function emit(token) {
   let top = stack[stack.length - 1];
@@ -227,9 +227,9 @@ function attributeName(c) {
 function beforeAttributeValue(c) {
   if (c.match(/^[\t\f\n ]$/) || c === "/" || c === ">" || c === EOF) {
     return beforeAttributeValue;
-  } else if (c === '"') {
+  } else if (c === '\'') {
     return singleQuotedAttributeValue;
-  } else if (c === '"') {
+  } else if (c === '\"') {
     return doubleQuotedAttributeValue;
   } else if (c === ">") {
   } else {
