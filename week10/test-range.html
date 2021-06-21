@@ -1,0 +1,23 @@
+<div id="a">
+  <span>1</span>
+  <p>2</p>
+  <a>3</a>
+  <div>4</div>
+</div>
+
+<script>
+  const element = document.getElementById("a");
+
+  function reverseChildren(ele) {
+    const range = new Range();
+    range.selectNodeContents(ele);
+    let fragment = range.extractContents();
+    let l = fragment.childNodes.length;
+    while (l-- > 0) {
+      fragment.appendChild(fragment.childNodes[l]);
+    }
+    ele.appendChild(fragment);
+  }
+
+  reverseChildren(element);
+</script>
