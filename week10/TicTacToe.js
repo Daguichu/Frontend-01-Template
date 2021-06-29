@@ -17,14 +17,14 @@ const show = () => {
       cell.classList.add("cell");
       cell.innerText =
         pattern[i][j] == 2 ? "❌" : pattern[i][j] == 1 ? "⭕️" : "";
-      cell.addEventListener("click", () => move(j, i));
+      cell.addEventListener("click", () => useMove(j, i));
       board.appendChild(cell);
     }
     board.appendChild(document.createElement("br"));
   }
 };
 
-function move(x, y) {
+function useMove(x, y) {
   if (!pattern[y][x]) {
     pattern[y][x] = color;
     const result = check(pattern, color);
@@ -33,10 +33,21 @@ function move(x, y) {
     }
     color = 3 - color;
     show();
-    if (willWin(pattern, color)) {
-      color === 1 ? alert("⭕️ will win") : alert("❌ will win");
-    }
+    computeMove();
   }
+}
+
+function computeMove() {
+  let choice = bastChoice(pattern, color);
+  if (choice.point) {
+    pattern[choice.point[1]][choice.point[0]] = color;
+  }
+  const result = check(pattern, color);
+  if (result) {
+    color === 1 ? alert("⭕️ win") : alert("❌ win");
+  }
+  color = 3 - color;
+  show();
 }
 
 function check(pattern, color) {
@@ -111,7 +122,23 @@ function willWin(pattern, color) {
   return null;
 }
 
+let oppenings = new Map();
+oppenings.set(
+  [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ].toString() + "1",
+  {
+    point: [1, 1],
+    result: 0,
+  }
+);
+
 function bastChoice(pattern, color) {
+  if (oppenings.has(pattern.toString() + "1")) {
+    return oppenings.get(pattern.toString() + "1");
+  }
   let point = willWin(pattern, color);
   if (point) {
     return {
@@ -127,9 +154,9 @@ function bastChoice(pattern, color) {
       let tmp = clone(pattern);
       tmp[i][j] = color;
       let opp = bastChoice(tmp, 3 - color);
-      if(-opp.result >= result) {
+      if (-opp.result >= result) {
         point = [j, i];
-        result = -opp.result
+        result = -opp.result;
       }
     }
   }
